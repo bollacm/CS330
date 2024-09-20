@@ -1,6 +1,6 @@
 #todo: List of multiplle accounts, pass through to withdraw and dpeosit threads, with 3 threads per account
 # implement a sync primitive
-#
+#Colin Swain and Marcus Bollacker
 import threading
 import time
 
