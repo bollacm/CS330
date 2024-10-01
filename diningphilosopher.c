@@ -13,12 +13,12 @@ main()
         philos[i][3] = 0;
         fork[i][0]=i;
         if (i!=4) 
-            fork[i][1]= i+1;
+            fork[i][1]= i;
         
         else 
             fork[i][1] = 1;
 
-        fork[i+1][2] = 0;
+        fork[i][2] = 0;
         i++;
     }
     // Print all elements of philos array
