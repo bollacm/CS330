@@ -113,8 +113,6 @@ while count <10000:
     account2.deposit(5)
     account2.withdraw(1)
     count+=1
-
-
 endSequential = time.time()
 
 print(f"Sequential: {endSequential - startSequential} vs Multithreaded: {endThread2 - startThread2}") 
