@@ -1,5 +1,25 @@
 #include <stdio.h>
 
+
+
+void eat(int philosopher[5][4], int forks[5][3]){
+    for (int i = 0; i < 5; i++){
+        if ((philosopher[i][1] <= 20) &&
+            (forks[i][0] == 0) && (forks[i+1][0] == 0)){
+            philosopher[i][1] += 10;
+            printf("Philosopher %d is eating\n", i);
+        }
+        else if (philosopher[5][1] && 
+            forks[4] == 0 && forks[1] == 0){
+            philosopher[5][1] += 10;
+            printf("Philosopher 5 is eating\n");
+        }
+        else {
+            printf("Philosopher %d is thinking\n", i);
+        }
+    }
+}
+
 main()
 {
     
