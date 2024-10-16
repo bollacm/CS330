@@ -3,6 +3,8 @@
 #include <stdbool.h>
 #include <pthread.h>
 #include <unistd.h>
+#include <time.h>
+#include <stdlib.h>
 
 int philosopher_hunger[5] = {100, 100, 100, 100, 100};
 int hunger_tick = 10;
@@ -113,6 +115,18 @@ void* philosopher(void* num) {
 
 
 int main() {
+    //create health >=20 <=100 randomly
+    srand(time(NULL));
+
+    for(int i =0; i<5;i++){
+        int x = rand()%101;
+        if(x>20) {
+            philosopher_hunger[i] = x;
+        }
+        else {
+            philosopher_hunger[i] = 20;
+        }
+    }
 
     // Initialize mutexes
     for (int i = 0; i < 5; i++) {
