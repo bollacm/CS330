@@ -7,7 +7,7 @@
 #include <stdlib.h>
 
 int philosopher_hunger[5] = {100, 100, 100, 100, 100};
-int hunger_tick = 10;
+int hunger_tick = 1;
 pthread_mutex_t forks[5];
 pthread_t philosophers[5];
 pthread_mutex_t console_mutex;
@@ -23,6 +23,7 @@ bool is_hungry(int philosopher_hunger[5], int i) {
 
 //thinking
 bool is_thinking(int philosopher_hunger[5], int i) {
+    philosopher_hunger[i] -= hunger_tick;
     if (is_hungry(philosopher_hunger, i) == false) {
         return true;
     }
@@ -55,7 +56,6 @@ void* philosopher(void* num) {
 
 
         // Decrement hunger level for each tick
-        philosopher_hunger[i] -= hunger_tick;
         if (philosopher_hunger[i] <= 0) {
             philosopher_hunger[i] = 0;
             break;
@@ -71,7 +71,7 @@ void* philosopher(void* num) {
         }
 
         // Hungry or wants to eat
-        if (could_eat(i)) {
+       // if (could_eat(i)) {
             pthread_mutex_lock(&console_mutex);
              if (is_hungry(philosopher_hunger, i)){
                 printf("Philosopher %d is hungry.  Hunger: %d\n", i, philosopher_hunger[i]);
@@ -108,7 +108,7 @@ void* philosopher(void* num) {
             pthread_mutex_unlock(&forks[i]);
             pthread_mutex_unlock(&forks[(i + 1) % 5]);
         }
-    }
+    
     printf("Philosopher is done");
     return NULL;
 }
