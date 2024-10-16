@@ -71,7 +71,7 @@ void* philosopher(void* num) {
         }
 
         // Hungry or wants to eat
-       // if (could_eat(i)) {
+        if (is_hungry(philosopher_hunger, i)) {
             pthread_mutex_lock(&console_mutex);
              if (is_hungry(philosopher_hunger, i)){
                 printf("Philosopher %d is hungry.  Hunger: %d\n", i, philosopher_hunger[i]);
@@ -108,6 +108,7 @@ void* philosopher(void* num) {
             pthread_mutex_unlock(&forks[i]);
             pthread_mutex_unlock(&forks[(i + 1) % 5]);
         }
+    }
     
     printf("Philosopher is done");
     return NULL;
