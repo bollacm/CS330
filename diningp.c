@@ -6,8 +6,10 @@
 #include <time.h>
 #include <stdlib.h>
 
+#define EATING_TICKS 3
+
 int philosopher_hunger[5] = {100, 100, 100, 100, 100};
-int hunger_tick = 1;
+int hunger_tick = 10;
 pthread_mutex_t forks[5];
 pthread_t philosophers[5];
 pthread_mutex_t console_mutex;
@@ -97,12 +99,13 @@ void* philosopher(void* num) {
                 }
             }
 
-            // Eating
-            pthread_mutex_lock(&console_mutex);
-            printf("Philosopher %d is eating.  Hunger: %d \n", i, philosopher_hunger[i]);
-            pthread_mutex_unlock(&console_mutex);
-            eating(philosopher_hunger, i);
-            sleep(1);
+            // Eating for multiple ticks
+            for (int tick = 0; tick < EATING_TICKS; tick++) {
+                pthread_mutex_lock(&console_mutex);
+                printf("Philosopher %d is eating. Hunger: %d\n", i, philosopher_hunger[i]);
+                pthread_mutex_unlock(&console_mutex);
+                eating(philosopher_hunger, i);
+            }
 
             // Put down forks
             pthread_mutex_unlock(&forks[i]);
