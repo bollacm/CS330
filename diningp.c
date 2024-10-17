@@ -9,7 +9,7 @@
 #define EATING_TICKS 3
 
 int philosopher_hunger[5] = {100, 100, 100, 100, 100};
-int hunger_tick = 10;
+int hunger_value = 10;
 pthread_mutex_t forks[5];
 pthread_t philosophers[5];
 pthread_mutex_t console_mutex;
@@ -25,7 +25,6 @@ bool is_hungry(int philosopher_hunger[5], int i) {
 
 //thinking
 bool is_thinking(int philosopher_hunger[5], int i) {
-    philosopher_hunger[i] -= hunger_tick;
     if (is_hungry(philosopher_hunger, i) == false) {
         return true;
     }
@@ -35,21 +34,12 @@ bool is_thinking(int philosopher_hunger[5], int i) {
 
 //eating
 void eating(int philosopher_hunger[5], int i) {
-    philosopher_hunger[i] += hunger_tick; // Increment hunger meter
+    philosopher_hunger[i] += hunger_value; // Increment hunger meter
     if (philosopher_hunger[i] > 100) {
         philosopher_hunger[i] = 100;
     }
 }
 
-bool could_eat(int i) {
-    // Check if any philosopher is hungry
-    for (int j = 0; j < 5; j++) {
-        if (is_hungry(philosopher_hunger, j)) {
-            return false; // Prioritize hungry philosophers
-        }
-    }
-    return philosopher_hunger[i] < 100; // Allow eating if hunger is less than 100
-}
 
 void* philosopher(void* num) {
     int i = *(int*)num;
@@ -57,7 +47,8 @@ void* philosopher(void* num) {
     while (true) {
 
 
-        // Decrement hunger level for each tick
+        //break if philosopher is dead
+        philosopher_hunger[i] -= hunger_value;
         if (philosopher_hunger[i] <= 0) {
             philosopher_hunger[i] = 0;
             break;
@@ -88,16 +79,7 @@ void* philosopher(void* num) {
             pthread_mutex_lock(&forks[i]);
             pthread_mutex_lock(&forks[(i + 1) % 5]);
 
-            // Check if philosopher is dead
-            if (philosopher_hunger[i] == 0) {
-                pthread_mutex_lock(&console_mutex);
-                printf("Philosopher %d has died while holding forks.\n", i);
-                pthread_mutex_unlock(&console_mutex);
-                // Do not release forks, causing a deadlock
-                while (true) {
-                    sleep(1); // Infinite loop to simulate deadlock
-                }
-            }
+        
 
             // Eating for multiple ticks
             for (int tick = 0; tick < EATING_TICKS; tick++) {
