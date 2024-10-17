@@ -1,4 +1,5 @@
 //Dijkstra Solution source: https://en.wikipedia.org/wiki/Dining_philosophers_problem#Dijkstra's_solution
+//Marcus Bollacker and Colin Swain
 #include <stdio.h>
 #include <stdbool.h>
 #include <pthread.h>
