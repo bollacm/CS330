@@ -60,6 +60,8 @@ void* philosopher(void* num) {
         if (is_thinking(philosopher_hunger, i)) {
             pthread_mutex_lock(&console_mutex);
             printf("Philosopher %d is thinking. Hunger: %d \n", i, philosopher_hunger[i]);
+            fflush(stdout);
+
             pthread_mutex_unlock(&console_mutex);
             sleep(1);
         }
@@ -69,8 +71,11 @@ void* philosopher(void* num) {
             pthread_mutex_lock(&console_mutex);
              if (is_hungry(philosopher_hunger, i)){
                 printf("Philosopher %d is hungry.  Hunger: %d\n", i, philosopher_hunger[i]);
+                fflush(stdout);
              } else {
                 printf("Philosopher %d wants to eat. Hunger: %d\n", i, philosopher_hunger[i]);
+                fflush(stdout);
+
             }
     
 
@@ -86,6 +91,7 @@ void* philosopher(void* num) {
             for (int tick = 0; tick < EATING_TICKS; tick++) {
                 pthread_mutex_lock(&console_mutex);
                 printf("Philosopher %d is eating. Hunger: %d\n", i, philosopher_hunger[i]);
+                fflush(stdout);
                 pthread_mutex_unlock(&console_mutex);
                 eating(philosopher_hunger, i);
             }
@@ -97,6 +103,8 @@ void* philosopher(void* num) {
     }
     
     printf("Philosopher is done");
+    fflush(stdout);
+
     return NULL;
 }
 
